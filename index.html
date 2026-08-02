@@ -1,0 +1,1779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<title>Guitar Jam Songs</title>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%); color: #e8e8e8; font-family: 'Courier Prime', monospace; min-height: 100vh; padding: 20px; }
+.container { max-width: 1200px; margin: 0 auto; }
+header { text-align: center; margin-bottom: 30px; }
+h1 { font-family: 'Playfair Display', serif; font-size: 2.5rem; background: linear-gradient(45deg, #ff6b35, #f7931e, #fdb833); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 8px; }
+.subtitle { color: #a8b8d8; font-size: 0.95rem; }
+.controls { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+.control-group { display: flex; flex-direction: column; gap: 6px; position: relative; }
+label { color: #fdb833; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; }
+select, input, textarea { padding: 12px 15px; font-size: 1rem; font-family: 'Courier Prime', monospace; background: rgba(255, 255, 255, 0.05); border: 2px solid #ff6b35; border-radius: 8px; color: #e8e8e8; width: 100%; }
+select:focus, input:focus, textarea:focus { outline: none; background: rgba(255, 255, 255, 0.1); box-shadow: 0 0 20px rgba(255, 107, 53, 0.5); }
+.autocomplete-list { position: fixed; background: rgba(26, 31, 58, 0.99); border: 2px solid #ff6b35; border-radius: 8px; max-height: 300px; overflow-y: auto; display: none; z-index: 999999; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6); }
+.autocomplete-list.show { display: block; }
+.autocomplete-item { padding: 12px 15px; cursor: pointer; border-bottom: 1px solid rgba(255, 107, 53, 0.2); }
+.autocomplete-item:hover { background: rgba(255, 107, 53, 0.3); }
+.autocomplete-item .item-title { color: #fdb833; font-weight: 700; }
+.autocomplete-item .item-artist { color: #a8b8d8; font-size: 0.85rem; }
+.action-buttons { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
+.btn { background: linear-gradient(135deg, #ff6b35, #f7931e); border: none; color: white; padding: 10px 16px; border-radius: 6px; cursor: pointer; font-weight: 700; font-family: 'Courier Prime', monospace; font-size: 0.85rem; }
+.btn:hover { transform: scale(1.03); }
+.btn.secondary { background: rgba(255, 107, 53, 0.2); border: 2px solid #ff6b35; color: #fdb833; }
+.songs-grid { display: grid; gap: 15px; }
+.song-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 107, 53, 0.3); border-radius: 8px; padding: 20px; overflow: hidden; }
+.song-card:hover { border-color: #ff6b35; }
+.song-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
+.song-title-block { flex: 1; min-width: 180px; }
+.song-title { font-size: 1.4rem; font-weight: 700; color: #fdb833; }
+.song-artist { color: #a8b8d8; font-size: 0.9rem; }
+.song-meta { color: #888; font-size: 0.75rem; font-style: italic; margin-top: 4px; }
+.song-controls { display: flex; gap: 8px; flex-wrap: wrap; }
+.transpose-control { display: flex; align-items: center; gap: 6px; background: rgba(255, 107, 53, 0.2); border: 1px solid #ff6b35; border-radius: 6px; padding: 6px 10px; }
+.transpose-btn { background: #ff6b35; border: none; color: white; width: 26px; height: 26px; border-radius: 4px; cursor: pointer; font-weight: 700; font-family: 'Courier Prime', monospace; }
+.transpose-btn:hover { background: #fdb833; }
+.transpose-display { color: #fdb833; font-weight: 700; min-width: 36px; text-align: center; font-size: 0.85rem; }
+.icon-btn { background: none; border: 1px solid #ff6b35; color: #fdb833; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-weight: 700; font-family: 'Courier Prime', monospace; font-size: 0.8rem; }
+.icon-btn:hover { background: rgba(255, 107, 53, 0.2); }
+.song-content { margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255, 107, 53, 0.2); }
+.section-label { color: #fdb833; font-weight: 700; text-transform: uppercase; font-size: 0.75rem; margin: 12px 0 4px 0; letter-spacing: 1px; }
+.section-label:first-child { margin-top: 0; }
+.blank-spacer { height: 14px; }
+.album-chip { background: rgba(255,107,53,0.15); color: #ff9555; border: 1px solid rgba(255,107,53,0.4); border-radius: 12px; padding: 3px 10px; font-size: 0.72rem; cursor: pointer; margin-top: 6px; font-family: 'Courier Prime', monospace; transition: all 0.15s; }
+.album-chip:hover, .album-chip:active { background: rgba(255,107,53,0.3); color: #ffb070; }
+.chord-lyric-pair { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 6px; padding-bottom: 2px; }
+.chord-lyric-pair::-webkit-scrollbar { height: 4px; }
+.chord-lyric-pair::-webkit-scrollbar-thumb { background: rgba(255, 107, 53, 0.4); border-radius: 2px; }
+.chord-row { color: #ff9555; font-weight: 700; white-space: pre; font-size: 0.8rem; line-height: 1.3; font-family: 'Courier Prime', monospace; }
+.lyric-row { color: #d0d8e8; white-space: pre; font-size: 0.8rem; line-height: 1.5; font-family: 'Courier Prime', monospace; min-height: 1.2em; }
+.lyric-row.empty { color: #555; font-style: italic; border-bottom: 1px dashed #555; min-height: 1.5em; min-width: 60%; display: inline-block; }
+.standalone-chord { color: #ff9555; font-weight: 700; white-space: pre; font-size: 0.8rem; line-height: 1.3; font-family: 'Courier Prime', monospace; overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 6px; padding-bottom: 2px; }
+.no-results { text-align: center; color: #a8b8d8; font-size: 1.1rem; padding: 40px 20px; }
+.modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.85); }
+.modal.show { display: flex; align-items: center; justify-content: center; }
+.modal-content { background: linear-gradient(135deg, #1a1f3a 0%, #0a0e27 100%); padding: 25px; border-radius: 12px; border: 2px solid #ff6b35; max-width: 700px; width: 95%; max-height: 92vh; overflow-y: auto; }
+.modal-header { font-size: 1.3rem; font-weight: 700; color: #fdb833; margin-bottom: 8px; }
+.modal-subheader { color: #a8b8d8; font-size: 0.85rem; margin-bottom: 20px; }
+.form-group { margin-bottom: 15px; display: flex; flex-direction: column; gap: 6px; }
+.form-group label { color: #fdb833; font-weight: 700; }
+.form-group textarea { resize: vertical; min-height: 200px; }
+.help-text { color: #a8b8d8; font-size: 0.8rem; font-style: italic; margin-top: 4px; }
+.modal-buttons { display: flex; gap: 10px; margin-top: 20px; }
+.modal-buttons .btn { flex: 1; }
+.close-modal { background: none; border: 1px solid #ff6b35; color: #fdb833; padding: 10px; border-radius: 4px; cursor: pointer; font-weight: 700; font-family: 'Courier Prime', monospace; }
+.slot-counter { color: #fdb833; font-size: 0.85rem; font-weight: 700; padding: 8px 12px; background: rgba(255, 107, 53, 0.1); border-radius: 6px; margin-bottom: 8px; }
+.preview-box { background: rgba(0, 0, 0, 0.3); border: 1px dashed #ff6b35; border-radius: 6px; padding: 12px; margin-top: 10px; max-height: 250px; overflow-y: auto; }
+.preview-label { color: #fdb833; font-size: 0.75rem; text-transform: uppercase; margin-bottom: 8px; font-weight: 700; }
+@media (max-width: 768px) {
+    body { padding: 10px; }
+    h1 { font-size: 2rem; }
+    .controls { grid-template-columns: 1fr; }
+    .song-header { flex-direction: column; }
+    .song-controls { width: 100%; }
+    .song-card { padding: 12px; }
+    .chord-row, .lyric-row, .standalone-chord { font-size: 0.75rem; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+    <h1>🎸 Guitar Jam Songs</h1>
+    <p class="subtitle">Chords scaffolded for jamming. Add your own lyrics line-by-line.</p>
+</header>
+
+<div class="controls">
+    <div class="control-group">
+        <label for="artistSelect">Filter by Artist</label>
+        <select id="artistSelect"><option value="">All Artists</option></select>
+    </div>
+    <div class="control-group">
+        <label for="eraSelect">Filter by Decade</label>
+        <select id="eraSelect"><option value="">All Decades</option></select>
+    </div>
+    <div class="control-group">
+        <label for="searchInput">Search Songs</label>
+        <input type="text" id="searchInput" placeholder="Song title or artist...">
+        <div class="autocomplete-list" id="autocompleteList"></div>
+    </div>
+</div>
+
+<div class="action-buttons">
+    <button class="btn" onclick="openAddSongModal()">+ Add Song</button>
+    <button class="btn secondary" onclick="cleanupSectionLabels()">🧽 Clean Labels</button>
+    <button class="btn secondary" onclick="exportSongs()">⬇ Export</button>
+    <label class="btn secondary" for="importFile" style="cursor: pointer; display: inline-flex; align-items: center;">⬆ Import</label>
+    <input type="file" id="importFile" accept="*/*" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" onchange="handleImportFile(event)">
+</div>
+
+<div class="songs-grid" id="songsGrid"></div>
+
+<div id="playOverlay" style="display:none; position:fixed; bottom:20px; left:50%; transform:translateX(-50%); z-index:99999; background:rgba(26,31,58,0.95); border:2px solid #ff6b35; border-radius:12px; padding:12px 16px; box-shadow:0 8px 32px rgba(0,0,0,0.6);">
+    <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; justify-content:center;">
+        <button class="icon-btn" onclick="stopPlayMode()" style="font-size:1rem;">⏹ Stop</button>
+        <button class="icon-btn" onclick="togglePlayPause()" id="playPauseBtn" style="font-size:1rem;">⏸ Pause</button>
+        <div style="color:#fdb833; font-weight:700; font-size:0.85rem;">Speed:</div>
+        <button class="transpose-btn" onclick="changeScrollSpeed(-1)">−</button>
+        <div class="transpose-display" id="scrollSpeedDisplay">0.4×</div>
+        <button class="transpose-btn" onclick="changeScrollSpeed(1)">+</button>
+    </div>
+</div>
+<div id="noResults" class="no-results" style="display: none;">No songs found.</div>
+</div>
+
+<div id="lyricsModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header" id="lyricsModalTitle">Edit Song</div>
+        <div class="modal-subheader" id="lyricsModalSubtitle"></div>
+        
+        <div id="simpleMode">
+            <div class="slot-counter" id="slotCounter"></div>
+            <button class="btn" style="width: 100%; padding: 12px; margin-bottom: 12px;" onclick="openPasteFromSimpleMode()">📋 Paste from Songbook (build chords + lyrics)</button>
+            <div class="form-group">
+                <label>Lyrics (one line per dashed slot)</label>
+                <textarea id="lyricsInput" placeholder="Paste your lyrics here, one line per chord row.&#10;&#10;If there's anything that you want&#10;If there's anything I can do&#10;Just call on me and I'll send it along"></textarea>
+                <div class="help-text">Each line you type fills the next dashed slot in order. Bracketed [Chord] markers in pasted text can be cleaned with the button below.</div>
+            </div>
+            <button class="icon-btn" style="width: 100%; padding: 10px; margin-bottom: 8px;" onclick="stripChordMarkers()">🧹 Strip [Chord] markers from pasted text</button>
+            <button class="icon-btn" style="width: 100%; padding: 10px; margin-bottom: 10px;" onclick="toggleStructureMode()">⚙ Edit Chord Structure</button>
+        </div>
+        
+        <div id="structureMode" style="display: none;">
+            <div class="slot-counter">Edit chord lines and section labels. Use <strong>[Section]</strong> for labels. Empty lines become lyric slots.</div>
+            <div class="form-group">
+                <label>Chord Scaffold</label>
+                <textarea id="structureInput" style="min-height: 280px; font-size: 0.85rem;" placeholder="[Verse 1]&#10;C              Am&#10;_&#10;C              G7&#10;_"></textarea>
+                <div class="help-text">Use <code>_</code> on its own line to mark a lyric slot. Lyrics will be lost if you change the slot count.</div>
+            </div>
+            <button class="icon-btn" style="width: 100%; padding: 10px; margin-bottom: 8px;" onclick="openPasteMode()">📋 Paste from Songbook</button>
+            <button class="icon-btn" style="width: 100%; padding: 10px; margin-bottom: 10px;" onclick="toggleStructureMode()">← Back to Lyrics</button>
+        </div>
+        
+        <div id="pasteMode" style="display: none;">
+            <div class="slot-counter">Paste raw text from your songbook. The parser figures out which lines are chords, which are lyrics, and which are section labels.</div>
+            <div class="form-group">
+                <label>Songbook Text</label>
+                <textarea id="pasteInput" style="min-height: 280px; font-size: 0.85rem;" placeholder="Paste either format:&#10;&#10;[G]had a little [C]sweetheart I love [D]dearly&#10;&#10;OR&#10;&#10;G              C            D&#10;had a little sweetheart I love dearly"></textarea>
+                <div class="help-text">Lines wrapped in [Brackets] become section labels. Bracketed [Chords] in lyric lines get extracted into a chord row above. Stacked chord-then-lyric pairs are detected automatically.</div>
+            </div>
+            <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+                <button class="btn" style="flex: 1;" id="parsePasteBtn" onclick="applyPasteParse()">Parse &amp; Apply</button>
+                <button class="icon-btn" style="flex: 1;" onclick="closePasteMode()">Cancel</button>
+            </div>
+        </div>
+        
+        <div class="preview-box">
+            <div class="preview-label">Live Preview</div>
+            <div id="livePreview"></div>
+        </div>
+        <div class="modal-buttons">
+            <button class="btn" onclick="saveLyrics()">Save</button>
+            <button class="close-modal" onclick="closeModal('lyricsModal')">Cancel</button>
+        </div>
+        <div style="display: flex; gap: 8px; margin-top: 10px;">
+            <button class="icon-btn" style="flex: 1;" onclick="undoEdit()" id="undoBtn">↶ Undo</button>
+            <button class="icon-btn" style="flex: 1;" onclick="redoEdit()" id="redoBtn">↷ Redo</button>
+        </div>
+    </div>
+</div>
+
+<div id="addSongModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">Add New Song</div>
+        <div class="form-group">
+            <label>Song Title</label>
+            <input type="text" id="newSongTitle" placeholder="Song title...">
+        </div>
+        <div class="form-group">
+            <label>Artist</label>
+            <input type="text" id="newSongArtist" placeholder="Artist name...">
+        </div>
+        <div class="form-group">
+            <label>Instrument</label>
+            <select id="newSongInstrument">
+                <option value="Guitar">Guitar</option>
+                <option value="Ukulele">Ukulele</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Album (optional)</label>
+            <input type="text" id="newSongAlbum" placeholder="e.g. Pet Sounds, Abbey Road">
+        </div>
+        <div class="form-group">
+            <label>Year (optional)</label>
+            <input type="number" id="newSongYear" placeholder="e.g. 1969" min="1900" max="2099">
+        </div>
+        <div class="form-group">
+            <label>Key (optional)</label>
+            <input type="text" id="newSongKey" placeholder="e.g. G, C, Am, D">
+        </div>
+        <div class="form-group">
+            <label>Notes (optional)</label>
+            <input type="text" id="newSongNotes" placeholder="e.g. Capo 2, 4/4 time">
+        </div>
+        <div class="form-group">
+            <label>Chord Scaffold</label>
+            <textarea id="newSongScaffold" placeholder="Format: alternate chord lines and lyric placeholders.&#10;Use [Verse], [Chorus], [Bridge] for section labels.&#10;&#10;Example:&#10;[Verse 1]&#10;C              Am&#10;_&#10;F              G&#10;_"></textarea>
+            <div class="help-text">Use _ on its own line for each blank lyric slot. Use [Section] for labels.</div>
+        </div>
+        <div class="modal-buttons">
+            <button class="btn" onclick="saveNewSong()">Add Song</button>
+            <button class="close-modal" onclick="closeModal('addSongModal')">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// Song data structure:
+// scaffold: array of items: {type: 'section'|'chord'|'lyric', value: string}
+// userLyrics: array of strings, indexed to lyric slots in scaffold
+
+const songsData = [];
+
+function loadSongsWithMerge() {
+    // Version-bump check: if cache is from before the great reset, wipe it
+    const RESET_VERSION = '2026-05-08-empty';
+    const cacheVersion = localStorage.getItem('guitarSongsResetVersion');
+    if (cacheVersion !== RESET_VERSION) {
+        localStorage.removeItem('guitarSongsV2');
+        localStorage.setItem('guitarSongsResetVersion', RESET_VERSION);
+    }
+    
+    const saved = localStorage.getItem('guitarSongsV2');
+    if (!saved) {
+        // First-time load
+        return JSON.parse(JSON.stringify(songsData));
+    }
+    let cached;
+    try {
+        cached = JSON.parse(saved);
+    } catch (e) {
+        return JSON.parse(JSON.stringify(songsData));
+    }
+    // Build a lookup of cached songs by title|artist
+    const cachedById = {};
+    cached.forEach(s => {
+        cachedById[s.title + '|' + s.artist] = s;
+    });
+    // Build merged list: start with defaults order, prefer cached when present
+    const merged = [];
+    const seenIds = new Set();
+    songsData.forEach(defaultSong => {
+        const id = defaultSong.title + '|' + defaultSong.artist;
+        seenIds.add(id);
+        if (cachedById[id]) {
+            const c = cachedById[id];
+            const cachedSlots = (c.scaffold || []).filter(i => i.type === 'lyric').length;
+            const defaultSlots = (defaultSong.scaffold || []).filter(i => i.type === 'lyric').length;
+            const cachedChordRows = (c.scaffold || []).filter(i => i.type === 'chord').length;
+            const hasUserLyrics = (c.userLyrics || []).some(l => l && l.trim());
+            const hasUserScaffold = cachedChordRows > 0 || cachedSlots !== defaultSlots;
+            if (hasUserLyrics || hasUserScaffold) {
+                // User has invested in this song — keep their version exactly
+                merged.push(c);
+            } else {
+                // No user investment — refresh from defaults
+                merged.push(JSON.parse(JSON.stringify(defaultSong)));
+            }
+        } else {
+            merged.push(JSON.parse(JSON.stringify(defaultSong)));
+        }
+    });
+    // Append any user-added custom songs that aren't in defaults
+    cached.forEach(s => {
+        const id = s.title + '|' + s.artist;
+        if (!seenIds.has(id)) {
+            merged.push(s);
+        }
+    });
+    return merged;
+}
+
+let songs = loadSongsWithMerge();
+saveData(); // Persist the merged result so next load is consistent
+let currentFilter = { artist: '', album: '', era: '', search: '', transpose: {} };
+let editingSongId = null;
+
+const sharpScale = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+const flatScale = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+
+function transposeChordToken(chord, semitones) {
+    if (!chord) return chord;
+    const m = chord.match(/^([A-G])([b#]?)(.*)$/);
+    if (!m) return chord;
+    const baseNote = m[1] + m[2];
+    const ext = m[3];
+    let scale = (m[2] === 'b') ? flatScale : sharpScale;
+    let idx = scale.indexOf(baseNote);
+    if (idx === -1) {
+        scale = (scale === sharpScale) ? flatScale : sharpScale;
+        idx = scale.indexOf(baseNote);
+        if (idx === -1) return chord;
+    }
+    const newIdx = (idx + semitones + 120) % 12;
+    return scale[newIdx] + ext;
+}
+
+function transposeChordLine(line, semitones) {
+    if (semitones === 0) return line;
+    return line.replace(/[A-G][b#]?(?:maj|min|dim|aug|sus|add|m|M)?[0-9]*(?:\/[A-G][b#]?)?/g, token => {
+        // only transpose if it really looks like a chord (starts with capital A-G followed by valid modifiers)
+        if (/^[A-G][b#]?(?:maj|min|dim|aug|sus|add|m|M)?[0-9]*(?:\/[A-G][b#]?)?$/.test(token)) {
+            const parts = token.split('/');
+            const transposedRoot = transposeChordToken(parts[0], semitones);
+            if (parts.length === 2) {
+                return transposedRoot + '/' + transposeChordToken(parts[1], semitones);
+            }
+            return transposedRoot;
+        }
+        return token;
+    });
+}
+
+// Maximum number of named artists in the dropdown. Excess artists (with the fewest
+// songs) get bundled into "Various Artists".
+const ARTIST_DROPDOWN_CAP = 50;
+
+function getVariousArtistsSet() {
+    // Returns a Set of artist names that should be considered "Various Artists"
+    // (the long-tail artists that didn't make the dropdown cap).
+    const countByArtist = {};
+    songs.forEach(s => {
+        const a = s.artist;
+        if (!a) return;
+        countByArtist[a] = (countByArtist[a] || 0) + 1;
+    });
+    const artists = Object.keys(countByArtist);
+    if (artists.length <= ARTIST_DROPDOWN_CAP) return new Set();
+    // Sort by count desc, then alphabetically
+    artists.sort((a, b) => {
+        const diff = countByArtist[b] - countByArtist[a];
+        if (diff !== 0) return diff;
+        return a.localeCompare(b);
+    });
+    return new Set(artists.slice(ARTIST_DROPDOWN_CAP));
+}
+
+function updateArtistDropdown() {
+    const select = document.getElementById('artistSelect');
+    if (!select) return;
+    const sortKey = (a) => (a || '').replace(/^(the|a|an)\s+/i, '').toLowerCase();
+    const various = getVariousArtistsSet();
+    const visibleArtists = [...new Set(songs.map(s => s.artist))]
+        .filter(a => a && !various.has(a))
+        .sort((a, b) => sortKey(a).localeCompare(sortKey(b)));
+    select.innerHTML = '<option value="">All Artists</option>';
+    visibleArtists.forEach(artist => {
+        const o = document.createElement('option');
+        o.value = artist;
+        o.textContent = artist;
+        select.appendChild(o);
+    });
+    if (various.size > 0) {
+        const o = document.createElement('option');
+        o.value = '__various__';
+        o.textContent = `Various Artists (${various.size})`;
+        select.appendChild(o);
+    }
+}
+
+function yearToEra(year) {
+    if (!year || typeof year !== 'number') return '';
+    if (year < 1900) return '';
+    if (year < 1960) return 'Pre-1960s';
+    const decade = Math.floor(year / 10) * 10;
+    return decade + 's';
+}
+
+function updateEraDropdown() {
+    const select = document.getElementById('eraSelect');
+    if (!select) return;
+    const eras = new Set();
+    let hasUnknown = false;
+    songs.forEach(s => {
+        const era = yearToEra(s.year);
+        if (era) eras.add(era);
+        else hasUnknown = true;
+    });
+    // Order: Pre-1960s, 1960s, 1970s, ..., Unknown
+    const ordered = [...eras].sort((a, b) => {
+        if (a === 'Pre-1960s') return -1;
+        if (b === 'Pre-1960s') return 1;
+        return parseInt(a, 10) - parseInt(b, 10);
+    });
+    select.innerHTML = '<option value="">All Decades</option>';
+    ordered.forEach(era => {
+        const o = document.createElement('option');
+        o.value = era;
+        o.textContent = era;
+        select.appendChild(o);
+    });
+    if (hasUnknown) {
+        const o = document.createElement('option');
+        o.value = '__unknown__';
+        o.textContent = 'Unknown';
+        select.appendChild(o);
+    }
+}
+
+function songId(song) {
+    return song.title + '|' + song.artist;
+}
+
+function renderScaffold(song, transpose) {
+    const items = song.scaffold;
+    
+    // First pass: build a map from section base-name to its chord pattern.
+    // A "chord pattern" is the array of chord values for that section's lyric slots, in order.
+    // Base-name normalizes "Verse 1", "Verse 2", "Verse" all to "verse".
+    function sectionBaseName(name) {
+        return name.toLowerCase().replace(/\s*\d+\s*$/, '').replace(/\s*\(.*\)\s*$/, '').trim();
+    }
+    
+    const patternByBase = {}; // base-name -> array of chord values (or null for slots with no chord)
+    let curBase = null;
+    let curPattern = [];
+    let pendingChord = null;
+    
+    function flushSection() {
+        if (curBase && curPattern.length > 0) {
+            // Only record if this section has at least one chord
+            if (curPattern.some(c => c !== null) && !patternByBase[curBase]) {
+                patternByBase[curBase] = curPattern.slice();
+            }
+        }
+        curPattern = [];
+        pendingChord = null;
+    }
+    
+    for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        if (item.type === 'section') {
+            flushSection();
+            curBase = sectionBaseName(item.value);
+        } else if (item.type === 'chord') {
+            pendingChord = item.value;
+        } else if (item.type === 'lyric') {
+            curPattern.push(pendingChord);
+            pendingChord = null;
+        }
+    }
+    flushSection();
+    
+    // Second pass: render. Track per-section lyric-slot index so we can pull
+    // the inherited chord pattern from patternByBase when no chord row exists.
+    let html = '';
+    let lyricIndex = 0;
+    let activeBase = null;
+    let activePatternSlotIdx = 0;
+    let i = 0;
+    while (i < items.length) {
+        const item = items[i];
+        if (item.type === 'section') {
+            html += `<div class="section-label">[${escapeHtml(item.value)}]</div>`;
+            activeBase = sectionBaseName(item.value);
+            activePatternSlotIdx = 0;
+            i++;
+        } else if (item.type === 'blank') {
+            html += `<div class="blank-spacer"></div>`;
+            i++;
+        } else if (item.type === 'chord') {
+            const chordLine = transpose ? transposeChordLine(item.value, transpose) : item.value;
+            const next = items[i + 1];
+            if (next && next.type === 'lyric') {
+                const text = (song.userLyrics && song.userLyrics[lyricIndex]) || '';
+                const lyricHtml = text.trim() === ''
+                    ? `<div class="lyric-row empty">&nbsp;</div>`
+                    : `<div class="lyric-row">${escapeHtml(text)}</div>`;
+                html += `<div class="chord-lyric-pair"><div class="chord-row">${escapeHtml(chordLine)}</div>${lyricHtml}</div>`;
+                lyricIndex++;
+                activePatternSlotIdx++;
+                i += 2;
+            } else {
+                html += `<div class="standalone-chord">${escapeHtml(chordLine)}</div>`;
+                i++;
+            }
+        } else if (item.type === 'lyric') {
+            // Standalone lyric (no chord row above it).
+            // Try to inherit a chord from a matching earlier section.
+            const text = (song.userLyrics && song.userLyrics[lyricIndex]) || '';
+            let inheritedChord = null;
+            if (activeBase && patternByBase[activeBase]) {
+                const pat = patternByBase[activeBase];
+                if (activePatternSlotIdx < pat.length) {
+                    inheritedChord = pat[activePatternSlotIdx];
+                }
+            }
+            const lyricHtml = text.trim() === ''
+                ? `<div class="lyric-row empty">&nbsp;</div>`
+                : `<div class="lyric-row">${escapeHtml(text)}</div>`;
+            if (inheritedChord) {
+                const chordLine = transpose ? transposeChordLine(inheritedChord, transpose) : inheritedChord;
+                html += `<div class="chord-lyric-pair"><div class="chord-row" style="opacity:0.65" title="Inherited from earlier verse">${escapeHtml(chordLine)}</div>${lyricHtml}</div>`;
+            } else {
+                html += `<div class="chord-lyric-pair">${lyricHtml}</div>`;
+            }
+            lyricIndex++;
+            activePatternSlotIdx++;
+            i++;
+        }
+    }
+    return html;
+}
+
+function escapeHtml(str) {
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function countLyricSlots(song) {
+    return song.scaffold.filter(i => i.type === 'lyric').length;
+}
+
+function renderSongs() {
+    const grid = document.getElementById('songsGrid');
+    const noResults = document.getElementById('noResults');
+    const artist = currentFilter.artist;
+    const album = currentFilter.album;
+    const era = currentFilter.era;
+    const search = currentFilter.search.toLowerCase();
+    const variousSet = artist === '__various__' ? getVariousArtistsSet() : null;
+
+    let filtered = songs.filter(song => {
+        let matchesArtist;
+        if (!artist) {
+            matchesArtist = true;
+        } else if (artist === '__various__') {
+            matchesArtist = variousSet.has(song.artist);
+        } else {
+            matchesArtist = song.artist === artist;
+        }
+        let matchesEra;
+        if (!era) {
+            matchesEra = true;
+        } else if (era === '__unknown__') {
+            matchesEra = !song.year;
+        } else {
+            matchesEra = yearToEra(song.year) === era;
+        }
+        const matchesAlbum = !album || (song.album || '') === album;
+        const matchesSearch = !search || song.title.toLowerCase().includes(search) || song.artist.toLowerCase().includes(search);
+        return matchesArtist && matchesEra && matchesAlbum && matchesSearch;
+    });
+    
+    // Build map of artist -> count of unique albums (used to decide if album chips show)
+    const albumsByArtist = {};
+    songs.forEach(s => {
+        if (!s.album) return;
+        if (!albumsByArtist[s.artist]) albumsByArtist[s.artist] = new Set();
+        albumsByArtist[s.artist].add(s.album);
+    });
+    const artistHasAlbumGrouping = (a) => albumsByArtist[a] && albumsByArtist[a].size >= 2;
+    
+    // Sort: by artist, then by album (if present), then by title.
+    // Songs without an album go after albumed songs within the same artist.
+    const sortKey = (s) => (s || '').replace(/^(the|a|an)\s+/i, '').toLowerCase();
+    filtered.sort((a, b) => {
+        const ac = sortKey(a.artist).localeCompare(sortKey(b.artist));
+        if (ac !== 0) return ac;
+        // Within an artist: songs with album first (sorted by album), then no-album songs
+        const aHasAlbum = !!a.album;
+        const bHasAlbum = !!b.album;
+        if (aHasAlbum !== bHasAlbum) return aHasAlbum ? -1 : 1;
+        if (aHasAlbum && bHasAlbum) {
+            const albumCompare = sortKey(a.album).localeCompare(sortKey(b.album));
+            if (albumCompare !== 0) return albumCompare;
+        }
+        return sortKey(a.title).localeCompare(sortKey(b.title));
+    });
+
+    if (filtered.length === 0) {
+        grid.innerHTML = '';
+        noResults.style.display = 'block';
+        return;
+    }
+
+    noResults.style.display = 'none';
+    grid.innerHTML = filtered.map((song, idx) => {
+        const id = songId(song);
+        const transpose = currentFilter.transpose[id] || 0;
+        const showAlbumChip = song.album && artistHasAlbumGrouping(song.artist);
+        const albumChipHtml = showAlbumChip
+            ? `<button class="album-chip" onclick="filterByAlbum('${escId(song.artist)}', '${escId(song.album)}')">${escapeHtml(song.album)}</button>`
+            : '';
+        return `<div class="song-card">
+            <div class="song-header">
+                <div class="song-title-block">
+                    <div class="song-title">${escapeHtml(song.title)}</div>
+                    <div class="song-artist">${escapeHtml(song.artist)}</div>
+                    ${(() => { const m = buildMetaDisplay(song); return m ? `<div class="song-meta">${escapeHtml(m)}</div>` : ''; })()}
+                    ${albumChipHtml}
+                </div>
+                <div class="song-controls">
+                    <div class="transpose-control">
+                        <button class="transpose-btn" onclick="changeTranspose('${escId(id)}', -1)">−</button>
+                        <div class="transpose-display">${transpose > 0 ? '+' : ''}${transpose}</div>
+                        <button class="transpose-btn" onclick="changeTranspose('${escId(id)}', 1)">+</button>
+                    </div>
+                    <button class="icon-btn" onclick="togglePlayMode('${escId(id)}', event)" id="playBtn-${escId(id)}">▶ Play</button>
+                    <button class="icon-btn" onclick="openLyricsModal('${escId(id)}')">✎ Edit</button>
+                    <button class="icon-btn" onclick="deleteSong('${escId(id)}')">✕</button>
+                </div>
+            </div>
+            <div class="song-content">
+                ${renderScaffold(song, transpose)}
+            </div>
+        </div>`;
+    }).join('');
+}
+
+function filterByAlbum(artistName, albumName) {
+    currentFilter.artist = artistName;
+    currentFilter.album = albumName;
+    document.getElementById('artistSelect').value = artistName;
+    renderSongs();
+    // Also show a clear-album bar so user can get back out
+    showAlbumFilterBar(artistName, albumName);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showAlbumFilterBar(artistName, albumName) {
+    let bar = document.getElementById('albumFilterBar');
+    if (!bar) {
+        bar = document.createElement('div');
+        bar.id = 'albumFilterBar';
+        bar.style.cssText = 'background: rgba(255,107,53,0.15); border: 1px solid #ff6b35; border-radius: 8px; padding: 10px 14px; margin: 10px 0; display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem;';
+        const grid = document.getElementById('songsGrid');
+        grid.parentNode.insertBefore(bar, grid);
+    }
+    bar.innerHTML = `<span style="color: #fdb833;">Showing <strong>${escapeHtml(albumName)}</strong> by ${escapeHtml(artistName)}</span><button class="icon-btn" onclick="clearAlbumFilter()" style="padding: 4px 10px;">✕ Clear</button>`;
+    bar.style.display = 'flex';
+}
+
+function clearAlbumFilter() {
+    currentFilter.album = '';
+    const bar = document.getElementById('albumFilterBar');
+    if (bar) bar.style.display = 'none';
+    renderSongs();
+}
+
+function escId(id) {
+    return id.replace(/'/g, "\\'").replace(/"/g, '\\"');
+}
+
+function findSong(id) {
+    return songs.find(s => songId(s) === id);
+}
+
+let playState = {
+    active: false,
+    paused: false,
+    songId: null,
+    speed: parseFloat(localStorage.getItem('scrollSpeed')) || 0.4,
+    rafId: null,
+    lastTime: null,
+    targetEndY: null
+};
+
+function togglePlayMode(id, event) {
+    if (event) { event.stopPropagation(); }
+    if (playState.active && playState.songId === id) {
+        stopPlayMode();
+        return;
+    }
+    if (playState.active) {
+        stopPlayMode();
+    }
+    startPlayMode(id);
+}
+
+function startPlayMode(id) {
+    // Find the song card element
+    const allCards = document.querySelectorAll('.song-card');
+    let cardEl = null;
+    let cardIdx = -1;
+    allCards.forEach((c, i) => {
+        const btn = c.querySelector(`#playBtn-${CSS.escape(id)}`);
+        if (btn) { cardEl = c; cardIdx = i; }
+    });
+    if (!cardEl) return;
+    
+    // Scroll the song to the top of the viewport first
+    const rect = cardEl.getBoundingClientRect();
+    const startY = window.scrollY + rect.top - 10;
+    window.scrollTo({ top: startY, behavior: 'smooth' });
+    
+    // Determine end target: bottom of this card (or just past it)
+    playState.targetEndY = window.scrollY + rect.top + cardEl.offsetHeight - window.innerHeight + 40;
+    if (playState.targetEndY < startY) playState.targetEndY = startY + cardEl.offsetHeight;
+    
+    playState.active = true;
+    playState.paused = false;
+    playState.songId = id;
+    playState.lastTime = null;
+    playState.scrollAccumulator = 0;
+    
+    // Update the button label
+    const btn = document.getElementById(`playBtn-${id}`);
+    if (btn) btn.textContent = '⏹ Stop';
+    
+    // Show overlay
+    document.getElementById('playOverlay').style.display = 'block';
+    updateSpeedDisplay();
+    updatePlayPauseLabel();
+    
+    // Start scroll loop after the initial smooth-scroll settles
+    setTimeout(() => {
+        if (!playState.active) return;
+        playState.rafId = requestAnimationFrame(scrollTick);
+    }, 600);
+}
+
+function scrollTick(timestamp) {
+    if (!playState.active) return;
+    if (playState.paused) {
+        playState.lastTime = timestamp;
+        playState.rafId = requestAnimationFrame(scrollTick);
+        return;
+    }
+    if (playState.lastTime === null) {
+        playState.lastTime = timestamp;
+        playState.rafId = requestAnimationFrame(scrollTick);
+        return;
+    }
+    const dt = timestamp - playState.lastTime;
+    playState.lastTime = timestamp;
+    
+    // Baseline: 25 pixels per second at speed 1.0
+    const pixelsPerSecond = 25 * playState.speed;
+    const delta = (pixelsPerSecond * dt) / 1000;
+    
+    // Accumulate fractional pixels so slow speeds still scroll smoothly
+    // (browsers drop sub-pixel scroll requests, so we collect them up)
+    playState.scrollAccumulator = (playState.scrollAccumulator || 0) + delta;
+    if (playState.scrollAccumulator >= 1) {
+        const wholePixels = Math.floor(playState.scrollAccumulator);
+        window.scrollBy(0, wholePixels);
+        playState.scrollAccumulator -= wholePixels;
+    }
+    
+    // Stop when target reached
+    if (playState.targetEndY !== null && window.scrollY >= playState.targetEndY) {
+        stopPlayMode();
+        return;
+    }
+    
+    playState.rafId = requestAnimationFrame(scrollTick);
+}
+
+function togglePlayPause() {
+    if (!playState.active) return;
+    playState.paused = !playState.paused;
+    if (!playState.paused) playState.lastTime = null;
+    updatePlayPauseLabel();
+}
+
+function updatePlayPauseLabel() {
+    const btn = document.getElementById('playPauseBtn');
+    if (btn) btn.textContent = playState.paused ? '▶ Resume' : '⏸ Pause';
+}
+
+function changeScrollSpeed(dir) {
+    const step = 0.1;
+    playState.speed = Math.max(0.1, Math.min(5.0, playState.speed + (dir * step)));
+    playState.speed = Math.round(playState.speed * 10) / 10;
+    localStorage.setItem('scrollSpeed', playState.speed);
+    updateSpeedDisplay();
+}
+
+function updateSpeedDisplay() {
+    const el = document.getElementById('scrollSpeedDisplay');
+    if (el) el.textContent = playState.speed.toFixed(1) + '×';
+}
+
+function stopPlayMode() {
+    if (playState.rafId) cancelAnimationFrame(playState.rafId);
+    const oldId = playState.songId;
+    playState.active = false;
+    playState.paused = false;
+    playState.songId = null;
+    playState.rafId = null;
+    playState.lastTime = null;
+    playState.targetEndY = null;
+    document.getElementById('playOverlay').style.display = 'none';
+    if (oldId) {
+        const btn = document.getElementById(`playBtn-${oldId}`);
+        if (btn) btn.textContent = '▶ Play';
+    }
+}
+
+function changeTranspose(id, dir) {
+    if (!currentFilter.transpose[id]) currentFilter.transpose[id] = 0;
+    currentFilter.transpose[id] += dir;
+    renderSongs();
+}
+
+function isChordLine(line) {
+    const trimmed = line.trim();
+    if (trimmed === '') return false;
+    const tokens = trimmed.split(/\s+/);
+    if (tokens.length === 0) return false;
+    let chordCount = 0;
+    for (const t of tokens) {
+        if (/^[A-G][b#]?(?:maj|min|dim|aug|sus|add|m|M)?[0-9]*(?:\/[A-G][b#]?[0-9]*)?\+?$/.test(t)) {
+            chordCount++;
+        } else if (/^[\/\.\-,()]+$/.test(t)) {
+            chordCount++;
+        } else if (/^\(?[A-G][b#]?[a-z0-9]*\)?$/.test(t)) {
+            chordCount++;
+        }
+    }
+    return (chordCount / tokens.length) >= 0.6;
+}
+
+function scaffoldToStructureText(scaffold) {
+    let lines = [];
+    scaffold.forEach(item => {
+        if (item.type === 'section') {
+            if (lines.length > 0) lines.push('');
+            lines.push('[' + item.value + ']');
+        } else if (item.type === 'chord') {
+            lines.push(item.value);
+        } else if (item.type === 'lyric') {
+            lines.push('_');
+        } else if (item.type === 'blank') {
+            lines.push('');
+        }
+    });
+    return lines.join('\n');
+}
+
+function structureTextToScaffold(text) {
+    const scaffold = [];
+    const lines = text.split('\n');
+    for (const line of lines) {
+        const trimmed = line.trim();
+        if (trimmed === '') {
+            // Blank line becomes a blank spacer (skip duplicates)
+            const last = scaffold[scaffold.length - 1];
+            if (last && last.type !== 'blank' && last.type !== 'section') {
+                scaffold.push({ type: 'blank' });
+            }
+            continue;
+        }
+        if (trimmed.startsWith('[') && trimmed.endsWith(']')) {
+            scaffold.push({ type: 'section', value: trimmed.slice(1, -1) });
+        } else if (trimmed === '_') {
+            scaffold.push({ type: 'lyric' });
+        } else {
+            scaffold.push({ type: 'chord', value: line });
+        }
+    }
+    return scaffold;
+}
+
+let inStructureMode = false;
+
+function openLyricsModal(id) {
+    const song = findSong(id);
+    if (!song) return;
+    editingSongId = id;
+    inStructureMode = false;
+    document.getElementById('simpleMode').style.display = 'block';
+    document.getElementById('structureMode').style.display = 'none';
+    document.getElementById('pasteMode').style.display = 'none';
+    document.getElementById('lyricsModalTitle').textContent = song.title;
+    const metaDisplay = buildMetaDisplay(song);
+    document.getElementById('lyricsModalSubtitle').textContent = song.artist + (metaDisplay ? ' · ' + metaDisplay : '');
+    const slotCount = countLyricSlots(song);
+    const filledCount = (song.userLyrics || []).filter(l => l && l.trim()).length;
+    document.getElementById('slotCounter').textContent = `${slotCount} lyric line${slotCount === 1 ? '' : 's'} available · ${filledCount} filled`;
+    document.getElementById('lyricsInput').value = (song.userLyrics || []).join('\n');
+    document.getElementById('structureInput').value = scaffoldToStructureText(song.scaffold);
+    // Init history with current state
+    editHistory = [{
+        scaffold: JSON.parse(JSON.stringify(song.scaffold)),
+        userLyrics: JSON.parse(JSON.stringify(song.userLyrics || []))
+    }];
+    editHistoryIndex = 0;
+    updateUndoRedoButtons();
+    updatePreview();
+    document.getElementById('lyricsModal').classList.add('show');
+}
+
+function toggleStructureMode() {
+    inStructureMode = !inStructureMode;
+    document.getElementById('simpleMode').style.display = inStructureMode ? 'none' : 'block';
+    document.getElementById('structureMode').style.display = inStructureMode ? 'block' : 'none';
+    document.getElementById('pasteMode').style.display = 'none';
+    // Sync: if leaving structure mode, parse the structure into the song so lyric mode reflects it
+    if (!inStructureMode) {
+        const song = findSong(editingSongId);
+        if (song) {
+            const newScaffold = structureTextToScaffold(document.getElementById('structureInput').value);
+            song.scaffold = newScaffold;
+            const newSlotCount = newScaffold.filter(i => i.type === 'lyric').length;
+            // Trim or pad userLyrics to match
+            const currentLyrics = (document.getElementById('lyricsInput').value || '').split('\n');
+            song.userLyrics = currentLyrics.slice(0, newSlotCount);
+            const filledCount = song.userLyrics.filter(l => l && l.trim()).length;
+            document.getElementById('slotCounter').textContent = `${newSlotCount} lyric line${newSlotCount === 1 ? '' : 's'} available · ${filledCount} filled`;
+            document.getElementById('lyricsInput').value = song.userLyrics.join('\n');
+        }
+    }
+    updatePreview();
+}
+
+
+function updatePreview() {
+    const song = findSong(editingSongId);
+    if (!song) return;
+    let scaffold, userLyrics;
+    if (inStructureMode) {
+        scaffold = structureTextToScaffold(document.getElementById('structureInput').value);
+        userLyrics = song.userLyrics || [];
+    } else {
+        scaffold = song.scaffold;
+        userLyrics = document.getElementById('lyricsInput').value.split('\n');
+    }
+    const tempSong = { scaffold, userLyrics };
+    document.getElementById('livePreview').innerHTML = renderScaffold(tempSong, 0);
+}
+
+function openPasteFromSimpleMode() {
+    document.getElementById('simpleMode').style.display = 'none';
+    document.getElementById('structureMode').style.display = 'none';
+    document.getElementById('pasteMode').style.display = 'block';
+    document.getElementById('pasteInput').value = '';
+    document.getElementById('pasteInput').focus();
+}
+
+function openPasteMode() {
+    document.getElementById('structureMode').style.display = 'none';
+    document.getElementById('pasteMode').style.display = 'block';
+    document.getElementById('pasteInput').value = '';
+    document.getElementById('pasteInput').focus();
+}
+
+function closePasteMode() {
+    document.getElementById('pasteMode').style.display = 'none';
+    document.getElementById('structureMode').style.display = 'none';
+    document.getElementById('simpleMode').style.display = 'block';
+    inStructureMode = false;
+}
+
+function looksLikeChordToken(token) {
+    // A standalone chord-ish thing: A-G optionally with #/b, modifiers, slash bass
+    return /^\(?[A-G][#b]?(?:m|maj|min|dim|aug|sus|add|M)?[0-9]*(?:\/[A-G][#b]?[0-9]*)?\)?$/.test(token);
+}
+
+function looksLikeChordLine(line) {
+    const stripped = line.trim();
+    if (!stripped) return false;
+    // Strip pipes and other separators that appear in chord notation
+    const tokens = stripped.split(/[\s|]+/).filter(t => t.length > 0);
+    if (tokens.length === 0) return false;
+    let chordCount = 0;
+    let nonChordCount = 0;
+    for (const t of tokens) {
+        if (looksLikeChordToken(t)) {
+            chordCount++;
+        } else if (/^[\/\.\-,()&%]+$/.test(t)) {
+            // Punctuation-only tokens are neutral
+        } else {
+            nonChordCount++;
+        }
+    }
+    // Need at least one chord, and chords should dominate
+    if (chordCount === 0) return false;
+    // If there's any real word, it's not a chord line
+    if (nonChordCount > 0) return false;
+    return true;
+}
+
+function looksLikeSectionLabel(line) {
+    const t = line.trim();
+    // [Section Name] format
+    if (/^\[[^\]]+\]$/.test(t)) {
+        // But not if it looks like chord brackets (single chord)
+        const inner = t.slice(1, -1).trim();
+        if (looksLikeChordToken(inner)) return false;
+        return true;
+    }
+    // Bare ALL CAPS section words
+    if (/^(VERSE|CHORUS|BRIDGE|INTRO|OUTRO|INSTRUMENTAL|BREAK|SOLO|REFRAIN|PRE-CHORUS|TAG|CODA)(\s*\d+)?[:.]?$/i.test(t)) {
+        return true;
+    }
+    return false;
+}
+
+function extractInlineChords(line) {
+    // Walk the line character by character, building both the chord row (with chords positioned
+    // at the column where their lyric character sits) and the cleaned lyric line.
+    const chordRegex = /\[([A-G][#b]?[a-z0-9]*(?:\/[A-G][#b]?[0-9]*)?)\]/g;
+    const chords = [];
+    let lyric = '';
+    let chordRow = '';
+    let i = 0;
+    let lastIndex = 0;
+    let m;
+    chordRegex.lastIndex = 0;
+    while ((m = chordRegex.exec(line)) !== null) {
+        // Append chars between last index and this match to the lyric
+        lyric += line.substring(lastIndex, m.index);
+        // Position of this chord in the cleaned lyric (= current lyric length)
+        const lyricCol = lyric.length;
+        // Pad chord row with spaces until we reach this column
+        while (chordRow.length < lyricCol) chordRow += ' ';
+        // Append the chord name
+        chordRow += m[1];
+        chords.push(m[1]);
+        lastIndex = chordRegex.lastIndex;
+    }
+    // Append the rest of the line to lyric
+    lyric += line.substring(lastIndex);
+    // Don't trim leading whitespace — that would shift the alignment
+    lyric = lyric.replace(/\s+$/, '');
+    chordRow = chordRow.replace(/\s+$/, '');
+    return { chords, lyric, chordRow };
+}
+
+function parseSongbookText(text) {
+    // Normalize line endings & curly quotes
+    text = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+    text = text.replace(/[\u2018\u2019]/g, "'").replace(/[\u201C\u201D]/g, '"');
+    
+    const rawLines = text.split('\n');
+    const scaffold = [];
+    const lyrics = [];  // collected in order, one entry per lyric slot
+    
+    let pendingChord = null;
+    
+    for (let i = 0; i < rawLines.length; i++) {
+        const line = rawLines[i];
+        const stripped = line.trim();
+        
+        if (!stripped) {
+            if (pendingChord !== null) {
+                scaffold.push({ type: 'chord', value: pendingChord });
+                pendingChord = null;
+            }
+            // Insert a blank spacer — but avoid stacking multiple blanks in a row
+            const last = scaffold[scaffold.length - 1];
+            if (last && last.type !== 'blank' && last.type !== 'section') {
+                scaffold.push({ type: 'blank' });
+            }
+            continue;
+        }
+        
+        if (looksLikeSectionLabel(stripped)) {
+            if (pendingChord !== null) {
+                scaffold.push({ type: 'chord', value: pendingChord });
+                pendingChord = null;
+            }
+            const sectionName = stripped.replace(/^\[|\]$/g, '').replace(/[:.]$/, '');
+            // Skip "Verse 1", "Chorus 1", etc. — the first verse/chorus/etc. should be unlabeled
+            if (/^(verse|chorus|bridge|intro|outro|refrain|pre[-\s]?chorus|tag|coda|interlude|instrumental|solo|break)\s*1$/i.test(sectionName.trim())) {
+                continue;
+            }
+            scaffold.push({ type: 'section', value: sectionName });
+            continue;
+        }
+        
+        // Pure chord line (stacked format) — no lyrics on this line
+        if (looksLikeChordLine(line)) {
+            if (pendingChord !== null) {
+                // Two chord lines in a row: previous was a standalone chord row
+                scaffold.push({ type: 'chord', value: pendingChord });
+            }
+            pendingChord = line.replace(/\s+$/, '');
+            continue;
+        }
+        
+        // Inline-chord lyric line ([G]had a [C]little...)
+        const hasInlineChords = /\[[A-G][#b]?[a-z0-9]*(?:\/[A-G][#b]?[0-9]*)?\]/.test(line);
+        if (hasInlineChords) {
+            if (pendingChord !== null) {
+                scaffold.push({ type: 'chord', value: pendingChord });
+                pendingChord = null;
+            }
+            const { chords, lyric, chordRow } = extractInlineChords(line);
+            if (chords.length > 0) {
+                scaffold.push({ type: 'chord', value: chordRow });
+            }
+            scaffold.push({ type: 'lyric' });
+            lyrics.push(lyric);
+            continue;
+        }
+        
+        // Plain lyric line
+        if (pendingChord !== null) {
+            // This lyric belongs under the pending chord row
+            scaffold.push({ type: 'chord', value: pendingChord });
+            pendingChord = null;
+            scaffold.push({ type: 'lyric' });
+            lyrics.push(stripped);
+        } else {
+            // Lyric with no chord above — still capture it
+            scaffold.push({ type: 'lyric' });
+            lyrics.push(stripped);
+        }
+    }
+    
+    if (pendingChord !== null) {
+        scaffold.push({ type: 'chord', value: pendingChord });
+    }
+    
+    return { scaffold, lyrics };
+}
+
+function applyPasteParse() {
+    try {
+        const pasteEl = document.getElementById('pasteInput');
+        if (!pasteEl) {
+            alert('DEBUG: pasteInput element not found in DOM.');
+            return;
+        }
+        const text = pasteEl.value;
+        if (!text || !text.trim()) {
+            alert('Paste some text first.');
+            return;
+        }
+        
+        const result = parseSongbookText(text);
+        if (!result || !result.scaffold) {
+            alert('DEBUG: parseSongbookText returned no result.');
+            return;
+        }
+        const newScaffold = result.scaffold;
+        const newLyrics = result.lyrics || [];
+        
+        if (newScaffold.length === 0) {
+            alert('Could not parse anything from the pasted text.\n\nFirst 100 chars: "' + text.substring(0, 100) + '"');
+            return;
+        }
+        const lyricCount = newScaffold.filter(i => i.type === 'lyric').length;
+        const chordCount = newScaffold.filter(i => i.type === 'chord').length;
+        const sectionCount = newScaffold.filter(i => i.type === 'section').length;
+        const filledCount = newLyrics.filter(l => l && l.trim()).length;
+        
+        if (!confirm('Parsed ' + sectionCount + ' section(s), ' + chordCount + ' chord row(s), ' + lyricCount + ' lyric slot(s) (' + filledCount + ' filled with lyrics from the paste).\n\nReplace this song?')) {
+            return;
+        }
+        
+        if (!editingSongId) {
+            alert('DEBUG: editingSongId is not set.');
+            return;
+        }
+        const song = findSong(editingSongId);
+        if (!song) {
+            alert('DEBUG: Could not find song with id: ' + editingSongId);
+            return;
+        }
+        
+        snapshotCurrent();
+        song.scaffold = newScaffold;
+        song.userLyrics = newLyrics;
+        
+        const structureEl = document.getElementById('structureInput');
+        const lyricsEl = document.getElementById('lyricsInput');
+        if (structureEl) structureEl.value = scaffoldToStructureText(song.scaffold);
+        if (lyricsEl) lyricsEl.value = (song.userLyrics || []).join('\n');
+        
+        snapshotCurrent();
+        saveData();
+        closePasteMode();
+        updatePreview();
+        renderSongs();
+        
+        const newSlotCount = countLyricSlots(song);
+        const newFilledCount = song.userLyrics.filter(l => l && l.trim()).length;
+        const counterEl = document.getElementById('slotCounter');
+        if (counterEl) counterEl.textContent = newSlotCount + ' lyric line(s) available · ' + newFilledCount + ' filled';
+        
+        alert('Done! Imported ' + chordCount + ' chord row(s) and ' + filledCount + ' lyric line(s).');
+    } catch (err) {
+        alert('ERROR in paste-parse:\n\n' + err.message + '\n\nStack: ' + (err.stack || 'no stack'));
+    }
+}
+
+function stripChordMarkers() {
+    const input = document.getElementById('lyricsInput');
+    const original = input.value;
+    // Remove [Chord] style markers — anything in square brackets that looks like a chord
+    // Conservative: only strip [X] where X starts with A-G (a real chord)
+    let cleaned = original.replace(/\[[A-G][^\]]{0,15}\]/g, '');
+    // Collapse multiple spaces created by removed chords
+    cleaned = cleaned.split('\n').map(line => {
+        return line.replace(/  +/g, ' ').replace(/^ +/, '').trimEnd();
+    }).join('\n');
+    // Remove blank lines created when a line was nothing but chord markers
+    cleaned = cleaned.split('\n').filter((line, i, arr) => {
+        // Keep non-empty lines; for empty lines, only keep one consecutive
+        if (line.trim() !== '') return true;
+        return i > 0 && arr[i-1].trim() !== '';
+    }).join('\n');
+    input.value = cleaned;
+    debouncedSnapshot();
+}
+
+function saveLyrics() {
+    const song = findSong(editingSongId);
+    if (!song) return;
+    if (inStructureMode) {
+        const newScaffold = structureTextToScaffold(document.getElementById('structureInput').value);
+        const newSlotCount = newScaffold.filter(i => i.type === 'lyric').length;
+        song.scaffold = newScaffold;
+        song.userLyrics = (song.userLyrics || []).slice(0, newSlotCount);
+    } else {
+        const lines = document.getElementById('lyricsInput').value.split('\n');
+        song.userLyrics = lines;
+    }
+    saveData();
+    renderSongs();
+    closeModal('lyricsModal');
+}
+
+function cleanupSectionLabels() {
+    if (!confirm('Scan every song in your library and remove any "[Verse 1]", "[Chorus 1]", etc. labels that appear mid-song?\n\nThe first verse, chorus, bridge, etc. should be unlabeled — this fixes songs where the parser preserved an unnecessary "1" label.')) {
+        return;
+    }
+    
+    const baseNamePattern = /^(verse|chorus|bridge|intro|outro|refrain|pre[-\s]?chorus|tag|coda|interlude|instrumental|solo|break)\s*1$/i;
+    
+    let totalSongsChanged = 0;
+    let totalLabelsRemoved = 0;
+    
+    songs.forEach(song => {
+        if (!song.scaffold || !Array.isArray(song.scaffold)) return;
+        const newScaffold = [];
+        let changedThisSong = false;
+        for (const item of song.scaffold) {
+            if (item.type === 'section' && baseNamePattern.test((item.value || '').trim())) {
+                totalLabelsRemoved++;
+                changedThisSong = true;
+                continue; // skip this label
+            }
+            newScaffold.push(item);
+        }
+        if (changedThisSong) {
+            song.scaffold = newScaffold;
+            totalSongsChanged++;
+        }
+    });
+    
+    if (totalSongsChanged === 0) {
+        alert('No "[Verse 1]" / "[Chorus 1]" style labels found. Library is already clean.');
+        return;
+    }
+    
+    saveData();
+    renderSongs();
+    alert(`Cleaned up ${totalLabelsRemoved} label${totalLabelsRemoved === 1 ? '' : 's'} across ${totalSongsChanged} song${totalSongsChanged === 1 ? '' : 's'}.`);
+}
+
+function openAddSongModal() {
+    document.getElementById('addSongModal').classList.add('show');
+}
+
+function buildMetaDisplay(song) {
+    // Build a clean display string from structured fields, falling back to legacy meta
+    const parts = [];
+    if (song.instrument) parts.push(song.instrument);
+    if (song.year) parts.push(String(song.year));
+    if (song.key) parts.push('Key of ' + song.key);
+    if (song.notes) parts.push(song.notes);
+    if (parts.length > 0) return parts.join(' · ');
+    // Legacy fallback: strip any "Play order:" segment from old meta strings
+    if (song.meta) {
+        return song.meta.split('·').map(s => s.trim()).filter(s => !s.toLowerCase().startsWith('play order')).join(' · ');
+    }
+    return '';
+}
+
+function saveNewSong() {
+    const title = document.getElementById('newSongTitle').value.trim();
+    const artist = document.getElementById('newSongArtist').value.trim();
+    const instrument = document.getElementById('newSongInstrument').value;
+    const album = document.getElementById('newSongAlbum').value.trim();
+    const yearRaw = document.getElementById('newSongYear').value.trim();
+    const year = yearRaw ? parseInt(yearRaw, 10) : null;
+    const key = document.getElementById('newSongKey').value.trim();
+    const notes = document.getElementById('newSongNotes').value.trim();
+    const scaffoldText = document.getElementById('newSongScaffold').value;
+    if (!title || !artist) { alert('Title and artist required'); return; }
+    
+    const scaffold = parseScaffoldText(scaffoldText);
+    const songData = { title, artist, instrument, album, key, notes, scaffold, userLyrics: [] };
+    if (year) songData.year = year;
+    songs.push(songData);
+    saveData();
+    updateArtistDropdown();
+    updateEraDropdown();
+    updateEraDropdown();
+    renderSongs();
+    closeModal('addSongModal');
+    document.getElementById('newSongTitle').value = '';
+    document.getElementById('newSongArtist').value = '';
+    document.getElementById('newSongAlbum').value = '';
+    document.getElementById('newSongYear').value = '';
+    document.getElementById('newSongKey').value = '';
+    document.getElementById('newSongNotes').value = '';
+    document.getElementById('newSongScaffold').value = '';
+}
+
+function parseScaffoldText(text) {
+    const scaffold = [];
+    const lines = text.split('\n');
+    lines.forEach(line => {
+        const trimmed = line.trim();
+        if (trimmed === '') return;
+        if (trimmed === '_') {
+            scaffold.push({ type: 'lyric' });
+        } else if (trimmed.startsWith('[') && trimmed.endsWith(']')) {
+            scaffold.push({ type: 'section', value: trimmed.slice(1, -1) });
+        } else {
+            scaffold.push({ type: 'chord', value: line });
+        }
+    });
+    return scaffold;
+}
+
+function deleteSong(id) {
+    if (confirm('Delete this song?')) {
+        songs = songs.filter(s => songId(s) !== id);
+        saveData();
+        updateArtistDropdown();
+        updateEraDropdown();
+        renderSongs();
+    }
+}
+
+// Per-song edit history (in-memory while modal is open)
+let editHistory = []; // array of {scaffold, userLyrics} snapshots
+let editHistoryIndex = -1;
+
+function snapshotCurrent() {
+    const song = findSong(editingSongId);
+    if (!song) return;
+    // Sync UI -> song before snapshotting
+    if (inStructureMode) {
+        const newScaffold = structureTextToScaffold(document.getElementById('structureInput').value);
+        song.scaffold = newScaffold;
+        const newSlotCount = newScaffold.filter(i => i.type === 'lyric').length;
+        song.userLyrics = (song.userLyrics || []).slice(0, newSlotCount);
+    } else {
+        const lines = document.getElementById('lyricsInput').value.split('\n');
+        song.userLyrics = lines;
+    }
+    // Truncate forward history
+    editHistory = editHistory.slice(0, editHistoryIndex + 1);
+    editHistory.push({
+        scaffold: JSON.parse(JSON.stringify(song.scaffold)),
+        userLyrics: JSON.parse(JSON.stringify(song.userLyrics || []))
+    });
+    // Cap at 50 snapshots
+    if (editHistory.length > 50) editHistory.shift();
+    editHistoryIndex = editHistory.length - 1;
+    updateUndoRedoButtons();
+}
+
+function applySnapshot(snap) {
+    const song = findSong(editingSongId);
+    if (!song) return;
+    song.scaffold = JSON.parse(JSON.stringify(snap.scaffold));
+    song.userLyrics = JSON.parse(JSON.stringify(snap.userLyrics));
+    document.getElementById('lyricsInput').value = (song.userLyrics || []).join('\n');
+    document.getElementById('structureInput').value = scaffoldToStructureText(song.scaffold);
+    const slotCount = countLyricSlots(song);
+    const filledCount = (song.userLyrics || []).filter(l => l && l.trim()).length;
+    document.getElementById('slotCounter').textContent = `${slotCount} lyric line${slotCount === 1 ? '' : 's'} available · ${filledCount} filled`;
+    updatePreview();
+    updateUndoRedoButtons();
+}
+
+function undoEdit() {
+    if (editHistoryIndex > 0) {
+        editHistoryIndex--;
+        applySnapshot(editHistory[editHistoryIndex]);
+    }
+}
+
+function redoEdit() {
+    if (editHistoryIndex < editHistory.length - 1) {
+        editHistoryIndex++;
+        applySnapshot(editHistory[editHistoryIndex]);
+    }
+}
+
+function updateUndoRedoButtons() {
+    const undoBtn = document.getElementById('undoBtn');
+    const redoBtn = document.getElementById('redoBtn');
+    if (undoBtn) undoBtn.style.opacity = editHistoryIndex > 0 ? '1' : '0.4';
+    if (redoBtn) redoBtn.style.opacity = editHistoryIndex < editHistory.length - 1 ? '1' : '0.4';
+}
+
+function resetThisSong() {
+    const song = findSong(editingSongId);
+    if (!song) return;
+    const original = songsData.find(s => songId(s) === editingSongId);
+    if (!original) {
+        alert('No default version exists for this song.');
+        return;
+    }
+    if (confirm('Reset "' + song.title + '" to its default scaffold and clear your lyrics?')) {
+        snapshotCurrent(); // save current state so undo works
+        song.scaffold = JSON.parse(JSON.stringify(original.scaffold));
+        song.userLyrics = [];
+        document.getElementById('lyricsInput').value = '';
+        document.getElementById('structureInput').value = scaffoldToStructureText(song.scaffold);
+        const slotCount = countLyricSlots(song);
+        document.getElementById('slotCounter').textContent = `${slotCount} lyric line${slotCount === 1 ? '' : 's'} available · 0 filled`;
+        snapshotCurrent();
+        updatePreview();
+    }
+}
+
+function exportSongs() {
+    const exportData = {
+        version: 1,
+        exportedAt: new Date().toISOString(),
+        songs: songs
+    };
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    const date = new Date().toISOString().slice(0, 10);
+    a.download = `jam-songs-${date}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+function handleImportFile(event) {
+    const file = event.target.files[0];
+    if (!file) {
+        alert('No file was selected.');
+        return;
+    }
+    const reader = new FileReader();
+    reader.onerror = () => {
+        alert('Error reading file: ' + reader.error);
+    };
+    reader.onload = (e) => {
+        try {
+            const text = e.target.result;
+            if (!text || text.length === 0) {
+                alert('File appears to be empty.');
+                event.target.value = '';
+                return;
+            }
+            const isJson = file.name.toLowerCase().endsWith('.json') || text.trim().startsWith('{');
+            if (isJson) {
+                importJSON(text);
+            } else {
+                importTextFormat(text);
+            }
+        } catch (err) {
+            alert('Import failed: ' + err.message);
+        } finally {
+            event.target.value = ''; // reset so same file can be re-uploaded
+        }
+    };
+    reader.readAsText(file);
+}
+
+function importJSON(text) {
+    let data;
+    try {
+        data = JSON.parse(text);
+    } catch (err) {
+        alert('Could not parse JSON file: ' + err.message);
+        return;
+    }
+    if (!data.songs || !Array.isArray(data.songs)) {
+        alert('JSON file is missing a "songs" array.');
+        return;
+    }
+    
+    // Figure out which artists are in the incoming file
+    const incomingArtists = [...new Set(data.songs.map(s => s.artist).filter(Boolean))];
+    const artistList = incomingArtists.length <= 4
+        ? incomingArtists.join(', ')
+        : incomingArtists.slice(0, 3).join(', ') + ' and ' + (incomingArtists.length - 3) + ' more';
+    
+    const choice = prompt(
+        `Found ${data.songs.length} songs in the file from ${incomingArtists.length} artist(s):\n${artistList}\n\n` +
+        `Type one of:\n` +
+        `  MERGE - add new songs and update lyrics for matches (recommended)\n` +
+        `  REPLACE - delete existing songs by these artists, then add the new ones (other artists untouched)\n` +
+        `  REPLACE ALL - wipe entire library and use only the file\n` +
+        `  CANCEL - do nothing`,
+        'MERGE'
+    );
+    if (!choice || choice.toUpperCase() === 'CANCEL') return;
+    
+    const upChoice = choice.toUpperCase().trim();
+    if (upChoice === 'REPLACE ALL' || upChoice === 'REPLACEALL') {
+        if (!confirm('⚠️ REPLACE ALL will DELETE every song in your library, including ones from artists not in this file.\n\nAre you sure?')) {
+            return;
+        }
+        songs = data.songs;
+        alert(`Library replaced. ${songs.length} songs loaded from file.`);
+    } else if (upChoice === 'REPLACE') {
+        // Artist-scoped replace: remove existing songs whose artist is in the incoming file,
+        // then add the incoming songs. Other artists are untouched.
+        const incomingArtistSet = new Set(incomingArtists.map(a => (a || '').toLowerCase()));
+        const before = songs.length;
+        songs = songs.filter(s => !incomingArtistSet.has((s.artist || '').toLowerCase()));
+        const removed = before - songs.length;
+        data.songs.forEach(s => songs.push(s));
+        alert(`Replaced songs for ${incomingArtists.length} artist(s).\n${removed} removed, ${data.songs.length} added.\nOther artists in your library were left alone.`);
+    } else {
+        // MERGE: add new, update existing by title|artist
+        const byId = {};
+        songs.forEach(s => { byId[s.title + '|' + s.artist] = s; });
+        let updated = 0, added = 0;
+        data.songs.forEach(incoming => {
+            const id = incoming.title + '|' + incoming.artist;
+            if (byId[id]) {
+                // Update existing — merge userLyrics if incoming has them
+                if (incoming.userLyrics && incoming.userLyrics.length > 0) {
+                    byId[id].userLyrics = incoming.userLyrics;
+                    updated++;
+                }
+                // Optionally update scaffold/key/notes if provided
+                if (incoming.scaffold) byId[id].scaffold = incoming.scaffold;
+                if (incoming.key !== undefined) byId[id].key = incoming.key;
+                if (incoming.notes !== undefined) byId[id].notes = incoming.notes;
+                if (incoming.instrument) byId[id].instrument = incoming.instrument;
+            } else {
+                songs.push(incoming);
+                added++;
+            }
+        });
+        alert(`Imported: ${added} new songs added, ${updated} existing songs updated.`);
+    }
+    saveData();
+    updateArtistDropdown();
+    updateEraDropdown();
+    renderSongs();
+}
+
+function normalizeForMatch(s) {
+    if (!s) return '';
+    return s
+        .replace(/[\u2018\u2019\u02BC\u2032]/g, "'")  // curly + modifier apostrophes -> straight
+        .replace(/[\u201C\u201D]/g, '"')               // curly quotes -> straight
+        .replace(/[\u2013\u2014]/g, '-')                // em/en dashes -> hyphen
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, ' ');
+}
+
+function importTextFormat(text) {
+    // Normalize line endings first
+    text = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+    
+    // Strip comment lines starting with #
+    const cleanedLines = text.split('\n').filter(l => !l.trim().startsWith('#')).join('\n');
+    
+    // Split on === lines
+    const blocks = cleanedLines.split(/^===+\s*$/m).map(b => b.trim()).filter(b => b);
+    if (blocks.length === 0) {
+        alert('No song blocks found.\n\nEach song must be separated by a line containing only === (three or more equals signs).');
+        return;
+    }
+    
+    // Build a normalized lookup of all songs in the library
+    const songLookup = {};
+    songs.forEach(s => {
+        const key = normalizeForMatch(s.title) + '|' + normalizeForMatch(s.artist);
+        songLookup[key] = s;
+    });
+    
+    let updated = 0;
+    let notFound = [];
+    let badHeaders = [];
+    let emptyBlocks = 0;
+    
+    blocks.forEach(block => {
+        const lines = block.split('\n');
+        if (lines.length === 0) { emptyBlocks++; return; }
+        const header = lines[0].trim();
+        if (!header) { emptyBlocks++; return; }
+        
+        const parts = header.split('|').map(s => s.trim());
+        if (parts.length < 2 || !parts[0] || !parts[1]) {
+            badHeaders.push(header);
+            return;
+        }
+        const [title, artist] = parts;
+        const lookupKey = normalizeForMatch(title) + '|' + normalizeForMatch(artist);
+        const song = songLookup[lookupKey];
+        
+        if (!song) {
+            notFound.push(`${title} | ${artist}`);
+            return;
+        }
+        
+        // Get lyric lines (everything after the header)
+        const lyricLines = lines.slice(1);
+        // Trim trailing blank lines but keep internal blanks
+        while (lyricLines.length > 0 && lyricLines[lyricLines.length - 1].trim() === '') {
+            lyricLines.pop();
+        }
+        
+        // Skip blocks with no lyrics — don't wipe existing lyrics with empty
+        if (lyricLines.length === 0) {
+            emptyBlocks++;
+            return;
+        }
+        
+        song.userLyrics = lyricLines;
+        updated++;
+    });
+    
+    // Build report
+    const lines = [];
+    lines.push(`Total blocks parsed: ${blocks.length}`);
+    lines.push(`Lyrics imported: ${updated} song${updated === 1 ? '' : 's'}`);
+    if (emptyBlocks > 0) lines.push(`Empty blocks skipped: ${emptyBlocks}`);
+    if (badHeaders.length > 0) {
+        lines.push(`\nBad headers (${badHeaders.length}):`);
+        badHeaders.slice(0, 5).forEach(h => lines.push(`  "${h}"`));
+        if (badHeaders.length > 5) lines.push(`  ...and ${badHeaders.length - 5} more`);
+    }
+    if (notFound.length > 0) {
+        lines.push(`\nTitle/artist not found in library (${notFound.length}):`);
+        notFound.slice(0, 8).forEach(n => lines.push(`  ${n}`));
+        if (notFound.length > 8) lines.push(`  ...and ${notFound.length - 8} more`);
+        lines.push(`\nTip: title/artist matching ignores case, spaces, and curly vs straight quotes — but the values must still match. Double-check spelling.`);
+    }
+    
+    alert(lines.join('\n'));
+    saveData();
+    renderSongs();
+}
+
+function saveData() {
+    localStorage.setItem('guitarSongsV2', JSON.stringify(songs));
+}
+
+function closeModal(id) {
+    document.getElementById(id).classList.remove('show');
+}
+
+function positionAutocomplete() {
+    const input = document.getElementById('searchInput');
+    const list = document.getElementById('autocompleteList');
+    const rect = input.getBoundingClientRect();
+    list.style.top = (rect.bottom + 4) + 'px';
+    list.style.left = rect.left + 'px';
+    list.style.width = rect.width + 'px';
+}
+
+function updateAutocomplete(query) {
+    const list = document.getElementById('autocompleteList');
+    if (!query.trim()) { list.classList.remove('show'); return; }
+    const q = query.toLowerCase();
+    const matches = songs.filter(s => s.title.toLowerCase().includes(q) || s.artist.toLowerCase().includes(q)).slice(0, 8);
+    if (matches.length === 0) { list.classList.remove('show'); return; }
+    list.innerHTML = matches.map(s => 
+        `<div class="autocomplete-item" onmousedown="pickSuggestion('${escId(songId(s))}')">
+            <div class="item-title">${escapeHtml(s.title)}</div>
+            <div class="item-artist">${escapeHtml(s.artist)}</div>
+        </div>`
+    ).join('');
+    positionAutocomplete();
+    list.classList.add('show');
+}
+
+function pickSuggestion(id) {
+    const song = findSong(id);
+    if (!song) return;
+    document.getElementById('searchInput').value = song.title;
+    document.getElementById('artistSelect').value = song.artist;
+    document.getElementById('autocompleteList').classList.remove('show');
+    filterSongs();
+}
+
+function filterSongs() {
+    const newArtist = document.getElementById('artistSelect').value;
+    // If the artist changed, clear the album filter
+    if (newArtist !== currentFilter.artist) {
+        currentFilter.album = '';
+        const bar = document.getElementById('albumFilterBar');
+        if (bar) bar.style.display = 'none';
+    }
+    currentFilter.artist = newArtist;
+    const eraEl = document.getElementById('eraSelect');
+    currentFilter.era = eraEl ? eraEl.value : '';
+    currentFilter.search = document.getElementById('searchInput').value;
+    renderSongs();
+}
+
+document.getElementById('searchInput').addEventListener('input', e => {
+    updateAutocomplete(e.target.value);
+});
+document.getElementById('searchInput').addEventListener('keyup', filterSongs);
+document.getElementById('artistSelect').addEventListener('change', filterSongs);
+document.getElementById('eraSelect').addEventListener('change', filterSongs);
+let snapshotTimer = null;
+function debouncedSnapshot() {
+    updatePreview();
+    if (snapshotTimer) clearTimeout(snapshotTimer);
+    snapshotTimer = setTimeout(snapshotCurrent, 800);
+}
+document.getElementById('lyricsInput').addEventListener('input', debouncedSnapshot);
+document.getElementById('structureInput').addEventListener('input', debouncedSnapshot);
+
+document.addEventListener('click', e => {
+    if (e.target.id !== 'searchInput' && !e.target.closest('.autocomplete-item')) {
+        document.getElementById('autocompleteList').classList.remove('show');
+    }
+});
+
+window.addEventListener('scroll', () => {
+    const list = document.getElementById('autocompleteList');
+    if (list.classList.contains('show')) positionAutocomplete();
+}, true);
+
+window.addEventListener('resize', () => {
+    const list = document.getElementById('autocompleteList');
+    if (list.classList.contains('show')) positionAutocomplete();
+});
+
+document.querySelectorAll('.modal').forEach(modal => {
+    modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('show'); });
+});
+
+// Robust binding for the Parse button — survives iOS quirks
+const parseBtn = document.getElementById('parsePasteBtn');
+if (parseBtn) {
+    const handler = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        applyPasteParse();
+    };
+    parseBtn.addEventListener('click', handler);
+    parseBtn.addEventListener('touchend', handler);
+}
+
+updateArtistDropdown();
+updateEraDropdown();
+renderSongs();
+</script>
+</body>
+</html>
